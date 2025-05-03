@@ -1,0 +1,83 @@
+
+#include <iostream>
+#define QueueSize 4
+
+using namespace std; 
+
+struct CircularQueue {
+       int front; 
+       int rear; 
+       int items[QueueSize]; 
+       }; 
+       
+void initialize(struct CircularQueue *cq){
+     cq->front = cq->rear = QueueSize - 1;      
+     }
+
+int isQueueFull(struct CircularQueue *);
+int isQueueEmpty(struct CircularQueue *);  
+void insert(struct CircularQueue *, int); 
+int remove(struct CircularQueue *); 
+       
+
+int main(void)
+{
+    struct CircularQueue ucq; 
+    initialize(&ucq); 
+    
+    
+    insert(&ucq, 6); 
+    insert(&ucq, 5); 
+    insert(&ucq, 8); 
+    insert(&ucq, 1); 
+    
+    
+    cout<<"The code is working if the desired element to be removed is printed now: "<<remove(&ucq); 
+}
+
+int isQueueFull(struct CircularQueue *cq)
+{
+    if (cq->front == cq->rear && cq->items[cq->front] != 0)
+          return 1; 
+    else 
+         return 0; 
+         }
+
+int isQueueEmpty(struct CircularQueue *cq)
+{
+    if (cq->front == cq->rear && cq->items[cq->front] == 0)
+          return 1;
+    else 
+         return 0; 
+         } 
+         
+void insert(struct CircularQueue *cq, int x) 
+{
+     if (isQueueFull(cq)){
+        cout<<"The circular queue is full !"; 
+        exit(1); }
+     
+     if (cq->rear == QueueSize - 1)
+        cq->rear = 0; 
+     else 
+          cq->rear++; 
+     
+     cq->items[cq->rear] = x; 
+}
+
+int remove(struct CircularQueue *cq) 
+{
+    if (isQueueEmpty(cq)) {
+       cout<<"The circular queue is empty"; 
+       exit(1); }
+       
+    int d = cq->items[cq->front];
+    
+    if (cq->front == QueueSize - 1)
+        cq->front = 0; 
+    else
+        cq->front++; 
+        
+    return d; 
+        }
+             
