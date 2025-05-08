@@ -1,0 +1,162 @@
+#include <iostream>
+#include<stdlib.h>
+#include <stdio.h>
+using namespace std;
+
+struct node{
+    int data;
+    struct node *next;
+};
+struct node *create (int item)
+{
+    struct node* temp;
+    temp=(struct node*)malloc(sizeof(node));
+    temp->data=item;
+    temp->next=NULL;
+    return temp;
+}
+struct node *insertFront(struct node* header, int data)
+{
+   struct node*temp=create(data);
+       temp->next=header;
+       header=temp;
+       return header;
+   
+}
+struct node*insertBack(struct node* header,int data)
+{
+ struct node* temp=create(data);
+ struct node* headertemp=header;
+ if( header==NULL)
+ { header=temp;
+ return header;
+ }
+ else{
+     while(headertemp->next!=NULL)
+     headertemp=headertemp->next;
+     headertemp->next=temp;
+     return header;
+ }
+}
+struct node* deletefront(struct node*header)
+{
+    struct node* temp=header;
+    if(header==NULL)
+        return header;
+    header=header->next;
+    free(temp);
+    return header;
+}
+struct node* deleteback(struct node *header)
+{
+    if(header==NULL)
+    return header;
+    struct node* temp;
+    struct node* headertemp=header;
+    while(headertemp->next->next!=NULL) 
+        headertemp=headertemp->next;
+    temp=headertemp->next;
+    headertemp->next=NULL;
+    free(temp);
+    return header;
+}
+void afternode (struct node*afternode,int data)
+{
+    struct node*temp=create(data);
+  temp->next= afternode->next;
+  afternode->next=temp;
+}
+void display(struct node * header)
+{
+    struct node*temp=header;
+    if(header==NULL)
+    cout<<"list is empty"<<endl;
+    while(temp!=NULL)
+    {
+        cout<<temp->data<<"->";
+        temp=temp->next;
+    }
+    cout<<endl;
+}
+int lenght(struct node * header)
+{
+    struct node* temp=header;
+    int count=0;
+    while(temp!=NULL)
+    {
+      count++;
+      temp=temp->next;
+    }
+    return count;
+}
+int sum(struct node *header)
+{
+    struct node *temp=header;
+    int sum=0;
+    while(temp!=NULL)
+    {
+        sum=sum+temp->data;
+        temp=temp->next;
+    }
+    return sum;
+}
+float avg(struct node* header)
+{
+    struct node* temp=header;
+    int count=0;
+    float sum=0.0,avg;
+    while(temp!=NULL)
+    { count++;
+    sum=sum+temp->data;
+       temp=temp->next;
+    }
+    avg=sum/count;
+    return avg;
+}
+struct node* deleteList(struct node * header)
+{
+    struct node* temp=header;
+    while(temp!=NULL)
+    {
+        temp=deletefront(temp);
+    }
+    header=temp;
+    return header;
+}
+void rotatLL(struct node *header)
+{
+    struct node* temp,*headertemp;
+    headertemp=header;
+    while(headertemp->next->next!=NULL)
+    headertemp=headertemp->next;
+    temp=headertemp->next;
+    headertemp->next=NULL;
+    temp->next=header;
+    header=temp;
+   display(header);
+    
+}
+int main()
+{
+    struct node*header=NULL;
+    display(header);
+    header=create(5);
+    header=insertFront(header,7);
+    header=insertBack(header,6);
+    display(header);
+    header=deletefront(header);
+    header=insertBack(header,4);
+    header=insertBack(header,3);
+    display(header);
+    afternode(header->next,5);
+    display(header);
+     header=deleteback(header);
+    display(header);
+     cout<<"lenght of the list:"<<lenght(header)<<endl;
+     cout<<"the summation of the items is: "<<sum(header)<<endl;
+     cout<<"the average of the list is: "<<avg(header)<<endl;
+     //header=deleteList(header);
+    rotatLL(header);
+   
+    return 0;
+}
