@@ -1,0 +1,43 @@
+//Top-most node is called root
+//Edge is the connecting link between two nodes in a tree
+//Parent - child 
+//Siblings are nodes which belong to the same father
+//A leaf is a node without any children
+//level
+//Depth of a node is the number of edge between the root and the node
+//Depth of the tree is the number of edges from root to the leaf in the longest path
+//Path is the sequence of nodes from one node to an other
+//Subtree
+//Binary tree is a tree where each parent should have a maximum of two nodes (Strictly:0, 2; Complete:2)
+//Traversal is a process that consists on visiting each node exactly once: 
+//In-order: Left-Root-Right (INFIX)
+//Pre-order: Root-Left-Right (PREFIX)
+//Post-order: Left-Right-Root (POSTFIX)
+
+#include <iostream>
+#include <cstdlib>
+
+using namespace std; 
+
+struct node *tree {
+	int data; 
+	struct node *left, *right; 
+};
+
+struct node *newN(int d) {
+	struct node *temp; 
+	temp = (struct node *) malloc(sizeof(node)); 
+	temp->data = d; 
+	temp->left = NULL; 
+	temp->right = NULL; 
+	
+	return temp; 
+}
+
+struct node *insertL(struct node *tree, struct node *n) {
+	if (tree == NULL)
+		return n; 
+	
+	tree->left = insertL(tree->left, n); 
+	return tree; 
+}
