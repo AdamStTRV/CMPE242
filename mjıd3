@@ -1,0 +1,240 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+#include <iostream>
+#include<stdlib.h>
+#include <stdio.h>
+using namespace std;
+
+struct node{
+    int data;
+    struct node *next;
+};
+struct node *create (int item)
+{
+    struct node* temp;
+    temp=(struct node*)malloc(sizeof(node));
+    temp->data=item;
+    temp->next=NULL;
+    return temp;
+}
+struct node *insertFront(struct node* header, int data)
+{
+   struct node*temp=create(data);
+       temp->next=header;
+       header=temp;
+       return header;
+   
+}
+struct node*insertBack(struct node* header,int data)
+{
+ struct node* temp=create(data);
+ struct node* headertemp=header;
+ if( header==NULL)
+ { header=temp;
+ return header;
+ }
+ else{
+     while(headertemp->next!=NULL)
+     headertemp=headertemp->next;
+     headertemp->next=temp;
+     return header;
+ }
+}
+struct node* deletefront(struct node*header)
+{
+    struct node* temp=header;
+    if(header==NULL)
+        return header;
+    header=header->next;
+    free(temp);
+    return header;
+}
+struct node* deleteback(struct node *header)
+{
+    if(header==NULL)
+    return header;
+    struct node* temp;
+    struct node* headertemp=header;
+    while(headertemp->next->next!=NULL) 
+        headertemp=headertemp->next;
+    temp=headertemp->next;
+    headertemp->next=NULL;
+    free(temp);
+    return header;
+}
+void afternode (struct node*afternode,int data)
+{
+    struct node*temp=create(data);
+  temp->next= afternode->next;
+  afternode->next=temp;
+}
+void display(struct node * header)
+{
+    struct node*temp=header;
+    if(header==NULL)
+    cout<<"list is empty"<<endl;
+    while(temp!=NULL)
+    {
+        cout<<temp->data<<"->";
+        temp=temp->next;
+    }
+    cout<<endl;
+}
+int lenght(struct node * header)
+{
+    struct node* temp=header;
+    int count=0;
+    while(temp!=NULL)
+    {
+      count++;
+      temp=temp->next;
+    }
+    return count;
+}
+int sum(struct node *header)
+{
+    struct node *temp=header;
+    int sum=0;
+    while(temp!=NULL)
+    {
+        sum=sum+temp->data;
+        temp=temp->next;
+    }
+    return sum;
+}
+float avg(struct node* header)
+{
+    struct node* temp=header;
+    int count=0;
+    float sum=0.0,avg;
+    while(temp!=NULL)
+    { count++;
+    sum=sum+temp->data;
+       temp=temp->next;
+    }
+    avg=sum/count;
+    return avg;
+}
+void deleteList(struct node * header)
+{
+    struct node* temp=header;
+    while(temp!=NULL)
+    {
+        temp=deletefront(temp);
+        //temp=deleteback(temp);
+        //temp=temp->next;
+    }
+    
+    header=temp;
+    display(header);
+}
+struct node* rotatLL(struct node *header)
+{
+    struct node* temp,*headertemp;
+    headertemp=header;
+    while(headertemp->next->next!=NULL)
+    headertemp=headertemp->next;
+    temp=headertemp->next;
+    headertemp->next=NULL;
+    temp->next=header;
+    header=temp;
+   return header;
+}
+void moveforward(struct node* *header,struct node* target)
+{
+    struct node * curr=*header,*prev=NULL;
+    if(*header==NULL || target==NULL || target->next==NULL)
+    return;
+   
+    while(curr!=target && curr!=NULL)
+    {
+        prev=curr;
+        curr=curr->next;
+    }
+    if(curr==NULL||curr->next==NULL)
+    return;
+     struct node*next=curr->next;
+    curr->next=next->next;
+    next->next=curr;
+    if(prev==NULL)
+    {
+        *header=next;
+    }
+    else{
+       prev->next=next; 
+    }
+  display(*header);
+    
+}
+/*void moveforward(struct node** header, struct node* target) {
+    if (*header == NULL || target == NULL || target->next == NULL) {
+        return;
+    }
+
+    struct node* prev = NULL;
+    struct node* curr = *header;
+
+    // Find the target node and its previous node
+    while (curr != NULL && curr != target) {
+        prev = curr;
+        curr = curr->next;
+    }
+
+    // If target is the first node or not found, return
+    if (curr == NULL || curr == *header) {
+        return;
+    }
+
+    // Move target node forward
+    struct node* next_node = curr->next;
+    curr->next = next_node->next;
+    next_node->next = curr;
+
+    // Update the previous node's next pointer
+    if (prev != NULL) {
+        prev->next = next_node;
+    } else {
+        *header = next_node;
+    }
+   
+}
+*/
+int main()
+{
+    struct node*header=NULL;
+    display(header);
+    header=create(5);
+    header=insertFront(header,7);
+    header=insertBack(header,6);
+    display(header);
+    header=deletefront(header);
+    header=insertBack(header,4);
+    header=insertBack(header,3);
+    display(header);
+    afternode(header->next,5);
+    display(header);
+     header=deleteback(header);
+    display(header);
+     cout<<"lenght of the list:"<<lenght(header)<<endl;
+     cout<<"the summation of the items is: "<<sum(header)<<endl;
+     cout<<"the average of the list is: "<<avg(header)<<endl;
+    //deleteList(header);
+     cout<<"rottat function:"<<endl;
+    header=rotatLL(header);
+    display(header);
+    header=insertBack(header,11);
+    header=insertBack(header,52);
+    header=insertBack(header,91);
+    cout<<"the new list"<<endl;
+    display(header);
+    cout<<"after movıng forward the target"<<endl;
+    struct node* target = header->next;
+    moveforward(&header, target);
+   
+    return 0;
+}
