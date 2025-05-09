@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 
 using namespace std;
 
@@ -10,9 +11,25 @@ struct node {
 struct node *create(int); 
 int isEmpty(struct node *); 
 struct node *insertF(struct node *, int); 
+struct node *insertB(struct node *, int);
+void insertA(struct node *, int);  
+void display(struct node *); 
+int length(struct node *); 
+struct node *deleteF(struct node *); 
+struct node *deleteB(struct node *); 
+void deleteA(struct node *); 
+void rotate(struct node *); 
 
 int main(void){
+	struct node *header = NULL; 
+	header = insertB(header, 5); 
+	header = insertB(header, 6); 
+	header = insertB(header, 2); 
+	header = insertB(header, 3); 
 	
+	rotate(header); 
+	cout<<endl; 
+	display(header); 
 }
 
 struct node *create(int item) {
@@ -45,5 +62,96 @@ struct node *insertF(struct node *header, int x) {
 struct node *insertB(struct node *header, int x) {
 	struct node *temp = create(x); 
 	
-	if (header)
+	if (header == NULL) {
+		header = temp; 
+		return header; 
+	}
+	
+	struct node *headertemp = header; 
+	while (headertemp->next != NULL) 
+		headertemp = headertemp->next; 
+	headertemp->next = temp; 
+	
+	return header; 
 }
+
+void insertA(struct node *fnode, int data) {
+	struct node *temp = create(data); 
+	
+	temp->next = fnode->next; 
+	
+	fnode->	next = temp; 
+}
+
+void display(struct node *header) {
+	if (isEmpty(header)) 
+		cout<<"List is empty"; 
+	
+	struct node *temp = header; 
+	
+	while (temp!= NULL) {
+		cout<<temp->data<<" ->"; 
+		temp = temp->next; 
+	}	
+}
+
+int length(struct node *header) {
+	struct node *temp = header; 
+	int count=0; 
+	
+	while (temp != NULL) {
+		count++; 
+		temp=temp->next; 
+	}
+}
+
+struct node *deleteF(struct node *header) {
+	struct node *temp;
+	
+	if (header == NULL)
+		return header; 
+	
+	temp = header;
+	header = header->next; 
+	
+	free(temp); 
+	return header;  
+}
+
+struct node *deleteB(struct node *header) {
+	struct node *headertemp = header, *temp; 
+	
+	if (header == NULL)
+		return header; 
+		
+	while (headertemp->next->next != NULL)
+		headertemp = headertemp->next; 
+		
+	temp = headertemp->next;
+	headertemp->next = NULL;
+	free(temp); 
+	
+	return header;   
+}
+
+void deleteA(struct node *fnode) {
+	struct node *temp = fnode->next;
+	
+	fnode->next = temp->next; 
+	free(temp); 
+}
+
+void rotate(struct node *header) {
+	struct node *temp, *headertemp = header; 
+	
+	while (headertemp->next->next != NULL)
+		headertemp = headertemp->next; 
+		
+	temp = headertemp->next;
+	headertemp->next = NULL; 
+	temp->next = header; 
+	header = temp; 
+	
+	display(header); 
+}
+
