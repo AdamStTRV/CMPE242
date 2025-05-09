@@ -1,0 +1,49 @@
+#include <iostream>
+
+using namespace std;
+
+struct node {
+	int data; 
+	struct node *next; 
+}; 
+
+struct node *create(int); 
+int isEmpty(struct node *); 
+struct node *insertF(struct node *, int); 
+
+int main(void){
+	
+}
+
+struct node *create(int item) {
+	struct node *temp; 
+	
+	temp = (struct node *) malloc(sizeof(node)); 
+	temp->data = item; 
+	temp->next = NULL; 
+	
+	return temp; 
+}
+
+int isEmpty(struct node *header) {
+	if (header == NULL)
+		return 1; 
+	else 
+		return 0; 
+}
+
+struct node *insertF(struct node *header, int x) {
+	struct node *temp = create(x); 
+	
+	temp->next = header; 
+	
+	header = temp; 
+	
+	return header; 
+} 
+
+struct node *insertB(struct node *header, int x) {
+	struct node *temp = create(x); 
+	
+	if (header)
+}
