@@ -4,7 +4,7 @@
 //Siblings are nodes which belong to the same father
 //A leaf is a node without any children
 //level
-//Depth of a node is the number of edge between the root and the node
+//Depth of a node is the number of edges between the root and the node
 //Depth of the tree is the number of edges from root to the leaf in the longest path
 //Path is the sequence of nodes from one node to an other
 //Subtree
@@ -40,4 +40,100 @@ struct node *insertL(struct node *tree, struct node *n) {
 	
 	tree->left = insertL(tree->left, n); 
 	return tree; 
+}
+
+struct node *insertR(struct node *tree, struct node *n) {
+	if (tree == NULL)
+		return n; 
+	
+	tree->right = insertR(tree->right, n); 
+	return tree; 
+}
+
+struct node *inOrderT(struct node *tree) {
+	if (tree == NULL)
+		return; 
+	
+	inOrderT(tree->left); 
+	cout<<tree->data<<" "; 
+	inOrderT(tree->right); 
+}
+
+struct node *preOrderT(struct node *tree) {
+	if (tree == NULL)
+		return; 
+	
+	cout<<tree->data<<" "; 
+	preOrderT(tree->left); 
+	preOrderT(tree->right); 
+}
+
+struct node *postOrderT(struct node *tree) {
+	if (tree == NULL)
+		return; 
+	
+	postOrderT(tree->left); 
+	postOrderT(tree->right); 
+	cout<<tree->data<<" "; 
+}
+
+int height(struct node *tree) {
+	int a, b, h; 
+	if (tree == NULL)
+		return NULL; 
+	a = height(tree->left); 
+	b = height(tree->right); 
+	
+	if (a>b)
+		h = a+1; 
+	else 
+		h = b+1; 
+	return h; 
+}
+
+struct node *deletion(struct node *tree, int d) {
+	struct node *temp; 
+	if (tree == NULL)
+		return NULL; 
+	if (d < tree->data ) {
+		tree->left = deletion(tree->left, d); 
+		return tree; 
+	}
+	if (d > tree->data) {
+		tree->right = deletion(tree->right, d); 
+		return tree; 
+	}
+	if (tree->left == NULL && tree->right == NULL) {
+		free(tree); 
+		return NULL; 
+	}
+	if (tree->left == NULL) {
+		temp = tree->right; 
+		free(temp); 
+		return temp; 
+	}
+	if (tree->right == NULL) {
+		temp = tree->left; 
+		free(temp); 
+		return temp; 
+	}
+	
+	temp = tree->left; 
+	temp = insertR(temp, tree->right); 
+	free(tree); 
+	return temp; 
+}
+
+int main(void) {
+	struct node *tree = NULL; 
+	tree = newN(8); 
+	
+	struct node *temp = NULL; 
+	
+	temp = newN(6); 
+	tree->left = insertL(tree->left, temp); 
+	
+	temp = newN(4); 
+	tree->right = insertR(tree->right, temp); 
+	
 }
